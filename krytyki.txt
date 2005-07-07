@@ -1,0 +1,118 @@
+0.3.0.0 ================================================
+========================================================
+========================================================
+========================================================
+
+Stack trace:
+.00046687 private: virtual int __thiscall MprFromMic::doProcessFrame(struct __MpBuf_tag * * const,struct __MpBuf_tag * * const,int,int,int,int,int)+0x107 (mprfrommic.cpp 96+41) [sipxtapi_2.9.1.0]
+
+Critical structured Exception "Access Violation" occured at adress 0x01519B65 in the "Actio" thread.
+Ex parameters: [0x00] [0x00] 
+
+lastIM: 50(0x0 , 0x0)(30B) [wXP UI->CORE]
+
+Stack trace:
+.00049B65 private: virtual int __thiscall MpMediaTask::handleMessage(class OsMsg &)+0x5 (mpmediatask.cpp 560+5) [sipxtapi_2.9.1.0]
+
+.00009565 _endthreadex+0x000000A0 [MSVCR71_7.10.3052.4]
+
+.0000B50B GetModuleFileNameA+0x000001B4 [kernel32_5.1.2600.2180]
+
+
+
+
+
+Critical structured Exception "Access Violation" occured at adress 0x7C350622 in the "Actio" thread.
+Ex parameters: [0x00] [0x79] 
+
+lastIM: 50(0x0 , 0x0)(30B) [wXP UI->CORE]
+
+Stack trace:
+.00010622 _strcmpi+0x00000046 [MSVCR71_7.10.3052.4]
+
+.0007C7CC private: class NameValuePair * __thiscall HttpMessage::getHeaderField(int,char const *)const +0x6C (httpmessage.cpp 2012+38) [sipxtapi_2.9.1.0]
+
+
+
+
+
+
+Critical structured Exception "Access Violation" occured at adress 0x0192F096 in the "Actio" thread.
+Ex parameters: [0x00] [0xFF] 
+
+lastIM: 50(0x0 , 0x0)(30B) [wXP UI->CORE]
+
+Stack trace:
+0192F096 
+
+.00109AC4 _$E2+0x117A4  [sipxtapi_2.9.1.0]
+
+.0007FD50 public: virtual void __thiscall HttpMessage::setRequestUnauthorized(class HttpMessage const *,char const *,char const *,char const *,char const *,char const *)+0x0 (httpmessage.cpp 3291) [sipxtapi_2.9.1.0]
+
+FEB2B778 
+
+
+
+
+
+Critical structured Exception "Access Violation" occured at adress 0x015927AA in the "Actio" thread.
+Ex parameters: [0x01] [0x49] 
+
+lastIM: 50(0x0 , 0x0)(30B) [wXP UI->CORE]
+
+Stack trace:
+.000C27AA __g_list_alloc+0x8A (glist.c 111+20) [sipxtapi_2.9.1.0]
+
+
+
+
+0.3.2.0 ================================================
+========================================================
+========================================================
+========================================================
+
+
+Stack trace:
+.00110919 _$E2+0x185F9  [sipxtapi_2.9.4.0]
+
+
+lastIM: 50(0x0 , 0x0)(30B) [wXP UI->CORE]
+
+Stack trace:
+.000B4C12 private: static void __cdecl UtlHashMapIterator::fillInContainables(void *,void *,void *)+0x22 (utlhashmapiterator.cpp 216+6) [sipxtapi_2.9.4.0]
+
+.001093B0 _$E2+0x11090  [sipxtapi_2.9.4.0]
+
+.000B4290 public: virtual int __thiscall UtlList::containsReference(class UtlContainable const *)const +0x10 (utllist.cpp 242+4) [sipxtapi_2.9.4.0]
+
+627D935A 
+
+
+
+
+Stack trace:
+.000C2ED5 _g_list_sort_merge+0x35 (glist.c 731+12) [sipxtapi_2.9.4.0]
+
+
+
+Stack trace:
+.000B5551 protected: __thiscall OsTaskBase::OsTaskBase(class UtlString const &,void *,int,int,int)+0x111 (ostask.cpp 157+4) [sipxtapi_2.9.4.0]
+
+
+Stack trace:
+.000C2ED5 _g_list_sort_merge+0x35 (glist.c 731+12) [sipxtapi_2.9.4.0]
+
+
+Stack trace:
+.00046E97 private: virtual int __thiscall MprToSpkr::doProcessFrame(struct __MpBuf_tag * * const,struct __MpBuf_tag * * const,int,int,int,int,int)+0x2B7 (mprtospkr.cpp 296+161) [sipxtapi_2.9.4.0]
+
+
+
+Stack trace:
+.0002FEDD public: bool __thiscall CWaveOut::IsPlaying(void)+0xD (waveout.cpp 287) [actio_0.3.2.0]
+.00025B80 public: static void __cdecl Stamina::PhonoLogic::CalibrationWnd::showCalibrationWindow(struct HWND__ *)+0xB0 (calibrationwnd.cpp 540+10) [actio_0.3.2.0]
+
+
+Stack trace:
+.000C2ED5 _g_list_sort_merge+0x35 (glist.c 731+12) [sipxtapi_2.9.4.0]
+
