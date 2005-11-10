@@ -44,6 +44,10 @@ namespace Stamina { namespace PhonoLogic {
 		this->finish();
 	}
 
+	std::string KAccount::getUserAgent() {
+		int v = ICMessage(IMC_PLUG_VERSION, ICMessage(IMC_PLUGID_POS, Ctrl->ID()));
+		return "Konnekt.Actio (" + Version(v).getString() + ")";
+	}
 
 	void KAccount::createWindow() {
 		IMDEBUG(DBG_FUNC, "createWindow()");
@@ -84,31 +88,30 @@ namespace Stamina { namespace PhonoLogic {
 		sipxFieldWatchAdd(_sxInst, "PortaBilling");
 	}
 
-	void KAccount::onTapiLineEvent(SIPX_LINE line, SIPX_LINE_EVENT_TYPE_MAJOR major) {
-		Account::onTapiLineEvent(line, major);
-		switch(major) {
-			case SIPX_LINE_EVENT_HEADER_VALUE_CHANGE: {
-				// Wyci¹gamy informacjê o stanie konta 
-				// PortaBilling: available-funds:3.45 currency:PLN 
-				const int valueSize = 255;
-				char value [valueSize];
-				sipxFieldWatchGet(_sxInst, "PortaBilling", value, valueSize);
-				RegEx regex;
-				if (regex.match("/available-funds:([\\d]+(?:[,.][\\d]+)?)/", value)) {
-					IMDEBUG(DBG_DEBUG, "WatchPortaBilling - ");
-					CStdString v = regex[1];
-					v.Replace(".", localeconv()->decimal_point);
-					v.Replace(",", localeconv()->decimal_point);
-					this->_balance = strtod(v.c_str(), 0);
-					this->_gotBalance = true;
+	void KAccount::onTapiHeaderWatchEvent(SIPX_HEADERWATCH_INFO* info) {
+		Account::onTapiHeaderWatchEvent(info);
 
-					if (this->windowExists()) {
-						this->getWindow()->refreshAccountInfo();
-					}
+		if (stricmp(info->field, "PortaBilling") == 0) {
+			// Wyci¹gamy informacjê o stanie konta 
+			// PortaBilling: available-funds:3.45 currency:PLN 
+
+			RegEx regex;
+			if (regex.match("/available-funds:([\\d]+(?:[,.][\\d]+)?)/", info->newValue)) {
+				IMDEBUG(DBG_DEBUG, "WatchPortaBilling - ");
+				CStdString v = regex[1];
+				v.Replace(".", localeconv()->decimal_point);
+				v.Replace(",", localeconv()->decimal_point);
+				this->_balance = strtod(v.c_str(), 0);
+				this->_gotBalance = true;
+
+				if (this->windowExists()) {
+					this->getWindow()->refreshAccountInfo();
 				}
-				Stamina::log(logDebug, "KAccount", "onTapiLineEvent::HEADER_VALUE_CHANGE", "PortaBilling = %s (%.2f)", value, this->_balance);
-				break;}
-		};
+			}
+		}
+
+		Stamina::log(logDebug, "KAccount", "onTapiLineEvent::HEADER_VALUE_CHANGE", "\"%s\" = \"%s\" -> \"%s\"", info->field, info->oldValue, info->newValue);
+
 	}
 
 
@@ -336,7 +339,7 @@ namespace Stamina { namespace PhonoLogic {
 
 	void KAccount::callToHistory(const oCall& call) {
 		Tables::oTable dt;
-		if (call->getClass() <= PhonoLogic::CallIncoming::classInfo()) {
+		if (call->getClass() <= PhonoLogic::CallIncoming::staticClassInfo()) {
 			// jest incoming...
 			dt = Actio::dtIncoming;
 		} else {
@@ -428,7 +431,7 @@ namespace Stamina { namespace PhonoLogic {
 
 	bool KAccount::updateCollectionArchive(PBCollectionArchive* entry, PBCollectionItem* item) {
 		PhoneBook* pb = this->_window->getPhoneBook();
-		bool outgoing = pb->getCollOutgoing() == item;
+		bool outgoing = (pb->getCollOutgoing().get() == item);
 		Tables::oTable dt = (outgoing) ? dtOutgoing : dtIncoming;
 		pb->lockRefresh();
 		item->removeAll(pb);

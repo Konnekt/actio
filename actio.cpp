@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-#include "../plug_defs/lib.h"
+#include <Konnekt/Lib.h>
 
 #include "actio.h"
 #include "actio_main.h"
