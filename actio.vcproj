@@ -86,7 +86,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ListWnd.lib Stamina.lib PhonoLogic.lib Sipxtapi.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib waveclass.lib Wininet.lib"
+				AdditionalDependencies="ListWnd.lib Stamina.lib PhonoLogic.lib Sipxtapi.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib devilu_dll.lib devilut_dll.lib waveclass.lib Wininet.lib"
 				OutputFile="$(OutDir)/_actio/plugins/actio.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;\c++\stamina\lib&quot;;../../__libs;&quot;\c++\__source\sipx\Lib&quot;;&quot;\c++\__source\waveclass\lib&quot;;../konnekt"

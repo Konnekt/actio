@@ -248,10 +248,10 @@ int IPrepare() {
 
 			txt = SetActParam("Zanim zaczniesz rozmawiaæ skalibruj kartê dŸwiêkow¹!", AP_ICO, Stamina::inttostr(ICON_OPTIONS));
 			UIActionAdd(ACT::configGroup , ACT::calibrate ,ACTT_LINK,txt,0,0, 30);
-			if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
+			//if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
 				txt = SetActParam("Dodatkowe ustawienia...", AP_ICO, Stamina::inttostr(ICON_OPTIONS));
 				UIActionAdd(ACT::configGroup , ACT::moreOptions ,ACTT_LINK,txt,0,0, 30);
-			}
+			//}
 
 
 		}UIActionAdd(ACT::configGroup, 0, ACTT_GROUPEND,"");
@@ -260,7 +260,7 @@ int IPrepare() {
 
 		//}UIActionAdd(ACT::configGroup, 0, ACTT_GROUPEND,"");
 
-		if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
+		//if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
 
 			UIGroupAdd(ACT::configGroup, ACT::configMoreGroup, 0, "Ustawienia", ICON_OPTIONS);
 
@@ -298,7 +298,7 @@ int IPrepare() {
 			}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 		
 
-			if (ShowBits::checkLevel(ShowBits::levelNormal)) {
+			//if (ShowBits::checkLevel(ShowBits::levelNormal)) {
 
 				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"");{
 
@@ -321,9 +321,9 @@ int IPrepare() {
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_NEEDRESTART, AP_TIP "G³os przesy³any jest przy pomocy protoko³u RTP.\nKa¿da rozmowa umieszczana jest na osobnych dwóch kana³ach. Wolnych musi byæ wiêc conajmniej kilkanaœcie portów wzwy¿.\n\nDomyœlnie - 9000", Actio::CFG::rtpPort, 50);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
-			}
+			//}
 
-		}
+		//}
 
 
 	}

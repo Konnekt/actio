@@ -377,6 +377,12 @@ namespace Stamina { namespace PhonoLogic {
 	void KAccount::markPhoneAsUsed(const PhoneUrl& url) {
 		if (url.isValid() == false)
 			return;
+
+		if (!this->getMainThread().isCurrent()) {
+			threadInvokeWait(this->getMainThread(), boost::bind(&KAccount::markPhoneAsUsed, this, url), false);
+			return;
+		}
+
 		Tables::oTable dt = dtNumbers; // dla wygody...
 		ObjLocker lock1(this->_window->getPhoneBook());
 		ObjLocker lock2(dt.get());
