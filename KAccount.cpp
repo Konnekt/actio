@@ -29,7 +29,7 @@ namespace Stamina { namespace PhonoLogic {
 
 	KAccount::KAccount() {
 		this->logFile = Stamina::expandEnvironmentStrings("%KonnektLog%\\actio.log");
-		this->_threadRunner = new ThreadRunnerStore(konnektBeginThread);
+		this->_threadRunner->setRunner(konnektBeginThread);
 		//sipxConfigSetBeginThread(konnektBeginThread);
 
 		this->stunHost = "";
