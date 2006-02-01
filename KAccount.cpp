@@ -85,7 +85,9 @@ namespace Stamina { namespace PhonoLogic {
 
 	void KAccount::onInitialize() {
 		Account::onInitialize();
-		sipxFieldWatchAdd(_sxInst, "PortaBilling");
+		if (_sxInst) {
+			sipxFieldWatchAdd(_sxInst, "PortaBilling");
+		}
 	}
 
 	void KAccount::onTapiHeaderWatchEvent(SIPX_HEADERWATCH_INFO* info) {

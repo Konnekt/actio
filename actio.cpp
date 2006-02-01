@@ -265,9 +265,11 @@ int IPrepare() {
 			UIGroupAdd(ACT::configGroup, ACT::configMoreGroup, 0, "Ustawienia", ICON_OPTIONS);
 
 			UIActionCfgAddPluginInfoBox2(Actio::ACT::configMoreGroup, 
-				"Konnekt-Actio umo¿liwia rozmowy telefonicznie za poœrednictwem sieci actio.pl. Prosimy mieæ na uwadze, ¿e wtyczka jest jeszcze w stadium testów!"
-				, "Za obs³ugê protoko³u odpowiada biblioteka <b>SipX</b>."
-				"<br/><br/>©2005 <b>Stamina</b>"
+				"KONNEKT Actio umo¿liwia rozmowy telefonicznie za poœrednictwem sieci actio.pl.\r\nProsimy mieæ na uwadze, ¿e wtyczka jest jeszcze w stadium testów!"
+				, "Za obs³ugê protoko³u odpowiada biblioteka <b>SipX</b> (http://www.sipfoundry.org/)."
+				"<br/>"
+				"<br/>Copyright ©2005,2006 <b>Stamina</b>"
+				"<br/>Copyright ©2004-2006 <b>Pingtel Corp.</b> (SipX)"
 				, "res://dll/logo.ico", -3);
 
 
@@ -433,6 +435,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 			Actio::disconnect();
 			return 0;
 		case ACT::moreOptions:
+			ACTIONONLY(anBase);
 			ICMessage(IMI_CONFIG, Actio::ACT::configMoreGroup);
 			return 0;
 		case ACT::statusOnline:
@@ -541,6 +544,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 		case Actio::ACT::linkCreateAccount:
 			ACTIONONLY(anBase);
 			ShellExecute(0, "open", Actio::urlCreateAccount, 0, 0, SW_SHOW);
+			//Actio::createAccount();
 			return 0;
 		case Actio::ACT::linkLostPassword:
 			ACTIONONLY(anBase);

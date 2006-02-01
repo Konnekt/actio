@@ -57,4 +57,6 @@ namespace Actio {
 	void newCall();
 	void calibrateSound();
 
+	void createAccount();
+
 };

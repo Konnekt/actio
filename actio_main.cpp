@@ -3,8 +3,9 @@
 #include "actio.h"
 #include "actio_main.h"
 #include <Stamina\PhonoLogic\CalibrationWnd.h>
+#include <include/dlghtml.h>
 // to powinno byæ zrobione inaczej!
-#include "..\core\KLogger.h"
+#include "KLogger.h"
 
 using namespace Stamina::PhonoLogic;
 using namespace Stamina;
@@ -49,9 +50,12 @@ namespace Actio {
 		if (account->isConfigured()) {
 			account->setVisibleStatus(ST_CONNECTING);
 		}
-		if (account->isConnecting())
+ 		if (account->isConnecting())
 			return;
 		account->connect(byUser);
+		if (account->isInitialized() == false) {
+			account->setVisibleStatus(ST_OFFLINE);
+		}
 	}
 	void disconnect() {
 		ICMessage(IMC_SETCONNECT, 0);
@@ -83,6 +87,13 @@ namespace Actio {
 		PhonoLogic::showCalibrationWindow((HWND)UIGroupHandle(sUIAction(0, IMIG_CFGWND)));
 //		account->PhonoLogic::Account::onButtonPressed(PhonoLogic::buttonOptions);
 	}
+
+
+	void createAccount() {
+		CHtmlDialog dlg("http://www.google.pl");
+		dlg.DoModal(true);
+	}
+
 
 
 };
