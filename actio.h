@@ -56,6 +56,8 @@ namespace Actio {
 		const unsigned int soundAlert = baseId + 10;
 		const unsigned int soundFailed = baseId + 11;
 
+		const unsigned int smsDefaultAction = baseId + 12;
+
 	};
 	namespace CNT {
 		const unsigned int phoneUrl = baseId + 0;

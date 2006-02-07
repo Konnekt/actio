@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ListWnd_d.lib Stamina_d.lib PhonoLogic_d.lib Sipxtapi_d.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib devilu_dll.lib devilut_dll.lib waveclass_d.lib Wininet.lib"
+				AdditionalDependencies="ListWnd_d.lib Stamina_d.lib PhonoLogic_d.lib Sipxtapi_d.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib devilu_dll.lib devilut_dll.lib waveclass_d.lib Wininet.lib Urlmon.lib"
 				OutputFile="$(OutDir)/plugins/actio.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;\c++\stamina\lib&quot;;../../__libs;&quot;\c++\__source\sipx\Lib&quot;;&quot;\c++\__source\waveclass\lib&quot;;../konnekt"
@@ -86,7 +86,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ListWnd.lib Stamina.lib PhonoLogic.lib Sipxtapi.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib devilu_dll.lib devilut_dll.lib waveclass.lib Wininet.lib"
+				AdditionalDependencies="ListWnd.lib Stamina.lib PhonoLogic.lib Sipxtapi.lib Msimg32.lib comctl32.lib winmm.lib devil_dll.lib devilu_dll.lib devilut_dll.lib waveclass.lib Wininet.lib Urlmon.lib"
 				OutputFile="$(OutDir)/_actio/plugins/actio.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;\c++\stamina\lib&quot;;../../__libs;&quot;\c++\__source\sipx\Lib&quot;;&quot;\c++\__source\waveclass\lib&quot;;../konnekt"
@@ -136,6 +136,21 @@
 				RelativePath=".\actio_main.cpp">
 			</File>
 			<File
+				RelativePath=".\include\DLGHTML.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\KAccount.cpp">
 			</File>
 			<File
@@ -167,7 +182,13 @@
 				RelativePath=".\actio_main.h">
 			</File>
 			<File
+				RelativePath=".\include\DLGHTML.h">
+			</File>
+			<File
 				RelativePath=".\kaccount.h">
+			</File>
+			<File
+				RelativePath=".\klogger.h">
 			</File>
 			<File
 				RelativePath=".\resource.h">

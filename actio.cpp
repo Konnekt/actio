@@ -86,6 +86,8 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::udpPort, ctypeInt, 5060, prefix + settingUdpPort);
 	SetColumn(tableConfig, CFG::rtpPort, ctypeInt, 9000, prefix + settingRtpPort);
 
+	SetColumn(tableConfig, CFG::smsDefaultAction, ctypeInt, 1, prefix + "ui/smsdefault");
+
 	SetColumn(tableConfig, colByName, ctypeInt, 0, prefix + settingCallAllowWaiting);
 	SetColumn(tableConfig, colByName, ctypeInt, 1, prefix + settingCallStoreRejected);
 	SetColumn(tableConfig, CFG::callPopup, ctypeInt, -1, prefix + "call/popup");
@@ -268,7 +270,7 @@ int IPrepare() {
 				"KONNEKT Actio umo¿liwia rozmowy telefonicznie za poœrednictwem sieci actio.pl.\r\nProsimy mieæ na uwadze, ¿e wtyczka jest jeszcze w stadium testów!"
 				, "Za obs³ugê protoko³u odpowiada biblioteka <b>SipX</b> (http://www.sipfoundry.org/)."
 				"<br/>"
-				"<br/>Copyright ©2005,2006 <b>Stamina</b>"
+				"<br/>Copyright ©2005-2006 <b>Stamina</b>"
 				"<br/>Copyright ©2004-2006 <b>Pingtel Corp.</b> (SipX)"
 				, "res://dll/logo.ico", -3);
 
@@ -280,6 +282,8 @@ int IPrepare() {
 
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Je¿eli rozmawiam, pokazuj nowe po³¹czenia jako oczekuj¹ce" AP_TIP "W przeciwnym razie zostan¹ odrzucone", Ctrl->DTgetNameID(DTCFG, prefix + settingCallAllowWaiting));
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Zapisuj odrzucone po³¹czenia w historii przychodz¹cych", Ctrl->DTgetNameID(DTCFG, prefix + settingCallStoreRejected));
+
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Dla kontaktów bez sieci domyœln¹ akcj¹ jest wys³anie SMSa", CFG::smsDefaultAction);
 
 				}
 
@@ -462,6 +466,10 @@ ActionProc(sUIActionNotify_base * anBase) {
 					if (indb)
 						UIActionSetText(anBase->act, calling ? "Zobacz po³¹czenie" : "Zadzwoñ");
 				} else if (anBase->code == ACTN_DEFAULT) {
+					static bool smsAvailable = IMessage(IM_PLUG_NET, NET_SMS) != NET_NONE;
+					if (smsAvailable && GETINT(CFG::smsDefaultAction) && GETCNTI(anBase->act.cnt, CNT_NET) == NET_NONE) {
+						return false;
+					}
 					return (indb && (calling || net==NET_NONE || net==Actio::net));
 				} else if (anBase->code == ACTN_ACTION) {
 					if (calling) {

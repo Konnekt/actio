@@ -247,7 +247,11 @@ namespace Stamina { namespace PhonoLogic {
 				ShellExecute(0, "open", Stamina::expandEnvironmentStrings(urlHelp).c_str(), "", "", SW_SHOW);
 				return;
 			case buttonAccount:
-				ShellExecute(0, "open", urlSelfCare, "", "", SW_SHOW);
+				if (this->isConfigured()) {
+					ShellExecute(0, "open", urlSelfCare, "", "", SW_SHOW);
+				} else {
+					ICMessage(IMI_CONFIG, Actio::ACT::configGroup);
+				}
 				return;
 			case buttonInfoMic:
 				ShellExecute(0, "open", urlProblemMic, "", "", SW_SHOW);
