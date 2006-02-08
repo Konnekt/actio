@@ -305,16 +305,16 @@ int IPrepare() {
 		
 
 			//if (ShowBits::checkLevel(ShowBits::levelNormal)) {
-
+/*
 				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"");{
 
-					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Zewnêtrzny adres IP");
+//					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Zewnêtrzny adres IP");
 
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT | ACTSC_INLINE,"", CFG::publicAddress);
 					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Nie musisz wype³niaæ tego pola! Program posiada obs³ugê STUN i w wiêkszoœci przypadków rozpozna ten adres samodzielnie.", 0, 0, -2);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
-
+*/
 				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"Numery portów");{
 
 					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"UDP");
@@ -324,7 +324,10 @@ int IPrepare() {
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_INLINE|ACTSC_NEEDRESTART, AP_TIP "Je¿eli komunikacja poprzez UDP nie jest mo¿liwa - u¿ywany jest protokó³ TCP.\n\nDomyœlnie - 5060", Actio::CFG::tcpPort, 50);
 
 					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"RTP");
-					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_NEEDRESTART, AP_TIP "G³os przesy³any jest przy pomocy protoko³u RTP.\nKa¿da rozmowa umieszczana jest na osobnych dwóch kana³ach. Wolnych musi byæ wiêc conajmniej kilkanaœcie portów wzwy¿.\n\nDomyœlnie - 9000", Actio::CFG::rtpPort, 50);
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_NEEDRESTART | ACTSC_INLINE, AP_TIP "G³os przesy³any jest przy pomocy protoko³u RTP.\nKa¿da rozmowa umieszczana jest na osobnych dwóch kana³ach. Wolnych musi byæ wiêc conajmniej kilkanaœcie portów wzwy¿.\n\nDomyœlnie - 9000", Actio::CFG::rtpPort, 50);
+
+					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Actio dzia³a na protokole SIP. Domyœlnie protokó³ ten wykorzystuje porty UDP 5060 i 9000-9010, oraz TCP 5060. Je¿eli posiadasz firewall, musisz odblokowaæ te porty do komunikacji obustronnej, lub (najlepiej) zezwoliæ aplikacji Konnekt na pe³n¹ komunikacjê z sieci¹.", 0, 0, -2);
+
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 			//}
@@ -614,6 +617,16 @@ int __stdcall IMessageProc(sIMessage_base * msgBase) {
 		return account && account->isConnected() ? ST_ONLINE : ST_OFFLINE;
 	case IM_GET_STATUSINFO:
 		return (int)"";
+
+	case IM_CHANGESTATUS:
+		if (msg->p1 != ST_OFFLINE) {
+			if (account && account->isConfigured()) {
+				Actio::connect(true);
+			}
+		} else {
+			Actio::disconnect();
+		}
+		return 0;
 
 	case IM_CNT_CHANGED: case IM_CNT_ADD:
 		numbersMap.updateContact(msg->p1);
