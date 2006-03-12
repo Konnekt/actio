@@ -58,6 +58,8 @@ namespace Actio {
 
 		const unsigned int smsDefaultAction = baseId + 12;
 
+		const unsigned int useSTUN = baseId + 20;
+
 	};
 	namespace CNT {
 		const unsigned int phoneUrl = baseId + 0;

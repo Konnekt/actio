@@ -86,6 +86,9 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::udpPort, ctypeInt, 5060, prefix + settingUdpPort);
 	SetColumn(tableConfig, CFG::rtpPort, ctypeInt, 9000, prefix + settingRtpPort);
 
+	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, "Actio/useSTUN");
+
+
 	SetColumn(tableConfig, CFG::smsDefaultAction, ctypeInt, 1, prefix + "ui/smsdefault");
 
 	SetColumn(tableConfig, colByName, ctypeInt, 0, prefix + settingCallAllowWaiting);
@@ -315,9 +318,9 @@ int IPrepare() {
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 */
-				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"Numery portów");{
+				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"Ustawienia sieci");{
 
-					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"UDP");
+					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Porty: UDP");
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_INLINE|ACTSC_NEEDRESTART, AP_TIP "Komunikacja z serwerem odbywa siê przez UDP.\n\nDomyœlnie - 5060", Actio::CFG::udpPort, 50);
 
 					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"TCP");
@@ -328,6 +331,7 @@ int IPrepare() {
 
 					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Actio dzia³a na protokole SIP. Domyœlnie protokó³ ten wykorzystuje porty UDP 5060 i 9000-9010, oraz TCP 5060. Je¿eli posiadasz firewall, musisz odblokowaæ te porty do komunikacji obustronnej, lub (najlepiej) zezwoliæ aplikacji Konnekt na pe³n¹ komunikacjê z sieci¹.", 0, 0, -2);
 
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK|ACTSC_NEEDRESTART, "U¿yj technologii STUN do ominiêcia NAT" AP_TIP "Us³uga STUN umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).", Actio::CFG::useSTUN);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 			//}
@@ -596,6 +600,8 @@ int __stdcall IMessageProc(sIMessage_base * msgBase) {
 	case IM_PLUG_INIT:       Plug_Init(msg->p1,msg->p2);return Init();
 	case IM_PLUG_DEINIT:     Plug_Deinit(msg->p1,msg->p2);return DeInit();
 	case IM_PLUG_DONTFREELIBRARY: return 1;
+    case IM_PLUG_PRIORITY:   return PLUGP_LOW;
+
 
 	case IM_SETCOLS:		 return ISetCols();
 

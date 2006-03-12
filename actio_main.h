@@ -24,6 +24,7 @@ namespace Actio {
 	const char * const urlAccountBalance = "http://www.konnekt.info/actio/stan_konta.html";
 
 	extern const CStdString serverHost;
+	extern const CStdString stunHost;
 
 	class NumbersMap: public std::map<Stamina::PhonoLogic::PhoneUrl, tCntId> {
 	public:
