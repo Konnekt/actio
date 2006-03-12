@@ -15,6 +15,9 @@ namespace Stamina {namespace PhonoLogic {
 		KAccount();
 		~KAccount();
 
+
+		std::string getUserAgent();
+
 		void connect(bool byUser);
 		void disconnect();
 
@@ -29,7 +32,7 @@ namespace Stamina {namespace PhonoLogic {
 		virtual void onConfigChanged();
 		virtual void onWindowActivated();
 	
-		void onTapiLineEvent(SIPX_LINE line, SIPX_LINE_EVENT_TYPE_MAJOR major);
+		void onTapiHeaderWatchEvent(SIPX_HEADERWATCH_INFO* info);
 		void onInitialize();
 
 		virtual void createWindow();

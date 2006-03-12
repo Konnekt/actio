@@ -17,13 +17,14 @@ namespace Actio {
 	const char * const urlHelp = "http://www.konnekt.info/actio/pytania.html";
 	const char * const urlCreateAccount = "http://www.konnekt.info/actio/zaloz_konto.html";
 	const char * const urlLostPassword = "http://www.konnekt.info/actio/przypomnij_haslo.html";
-	const char * const urlSelfCare = "http://www.konnekt.info/actio/panel_konta.html";
+	const char * const urlSelfCare = "http://www.konnekt.info/actio/strefa_klienta.html";
 	const char * const urlProblemQuality = "http://www.konnekt.info/actio/porady/jakosc.html";
 	const char * const urlProblemMic = "http://www.konnekt.info/actio/porady/mikrofon.html";
 	const char * const urlProblemSound = "http://www.konnekt.info/actio/porady/dzwiek.html";
 	const char * const urlAccountBalance = "http://www.konnekt.info/actio/stan_konta.html";
 
 	extern const CStdString serverHost;
+	extern const CStdString stunHost;
 
 	class NumbersMap: public std::map<Stamina::PhonoLogic::PhoneUrl, tCntId> {
 	public:
@@ -56,5 +57,7 @@ namespace Actio {
 	void makeCall(tCntId cnt, Stamina::PhonoLogic::PhoneType type = Stamina::PhonoLogic::phoneNone);
 	void newCall();
 	void calibrateSound();
+
+	void createAccount();
 
 };

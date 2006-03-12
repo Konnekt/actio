@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-#include "../plug_defs/lib.h"
+#include <Konnekt/Lib.h>
 
 #include "actio.h"
 #include "actio_main.h"
@@ -85,6 +85,11 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::tcpPort, ctypeInt, 5060, prefix + settingTcpPort);
 	SetColumn(tableConfig, CFG::udpPort, ctypeInt, 5060, prefix + settingUdpPort);
 	SetColumn(tableConfig, CFG::rtpPort, ctypeInt, 9000, prefix + settingRtpPort);
+
+	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, "Actio/useSTUN");
+
+
+	SetColumn(tableConfig, CFG::smsDefaultAction, ctypeInt, 1, prefix + "ui/smsdefault");
 
 	SetColumn(tableConfig, colByName, ctypeInt, 0, prefix + settingCallAllowWaiting);
 	SetColumn(tableConfig, colByName, ctypeInt, 1, prefix + settingCallStoreRejected);
@@ -248,10 +253,10 @@ int IPrepare() {
 
 			txt = SetActParam("Zanim zaczniesz rozmawiaæ skalibruj kartê dŸwiêkow¹!", AP_ICO, Stamina::inttostr(ICON_OPTIONS));
 			UIActionAdd(ACT::configGroup , ACT::calibrate ,ACTT_LINK,txt,0,0, 30);
-			if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
+			//if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
 				txt = SetActParam("Dodatkowe ustawienia...", AP_ICO, Stamina::inttostr(ICON_OPTIONS));
 				UIActionAdd(ACT::configGroup , ACT::moreOptions ,ACTT_LINK,txt,0,0, 30);
-			}
+			//}
 
 
 		}UIActionAdd(ACT::configGroup, 0, ACTT_GROUPEND,"");
@@ -260,14 +265,16 @@ int IPrepare() {
 
 		//}UIActionAdd(ACT::configGroup, 0, ACTT_GROUPEND,"");
 
-		if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
+		//if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
 
 			UIGroupAdd(ACT::configGroup, ACT::configMoreGroup, 0, "Ustawienia", ICON_OPTIONS);
 
 			UIActionCfgAddPluginInfoBox2(Actio::ACT::configMoreGroup, 
-				"Konnekt-Actio umo¿liwia rozmowy telefonicznie za poœrednictwem sieci actio.pl. Prosimy mieæ na uwadze, ¿e wtyczka jest jeszcze w stadium testów!"
-				, "Za obs³ugê protoko³u odpowiada biblioteka <b>SipX</b>."
-				"<br/><br/>©2005 <b>Stamina</b>"
+				"KONNEKT Actio umo¿liwia rozmowy telefonicznie za poœrednictwem sieci actio.pl.\r\nProsimy mieæ na uwadze, ¿e wtyczka jest jeszcze w stadium testów!"
+				, "Za obs³ugê protoko³u odpowiada biblioteka <b>SipX</b> (http://www.sipfoundry.org/)."
+				"<br/>"
+				"<br/>Copyright ©2005-2006 <b>Stamina</b>"
+				"<br/>Copyright ©2004-2006 <b>Pingtel Corp.</b> (SipX)"
 				, "res://dll/logo.ico", -3);
 
 
@@ -278,6 +285,8 @@ int IPrepare() {
 
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Je¿eli rozmawiam, pokazuj nowe po³¹czenia jako oczekuj¹ce" AP_TIP "W przeciwnym razie zostan¹ odrzucone", Ctrl->DTgetNameID(DTCFG, prefix + settingCallAllowWaiting));
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Zapisuj odrzucone po³¹czenia w historii przychodz¹cych", Ctrl->DTgetNameID(DTCFG, prefix + settingCallStoreRejected));
+
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Dla kontaktów bez sieci domyœln¹ akcj¹ jest wys³anie SMSa", CFG::smsDefaultAction);
 
 				}
 
@@ -298,32 +307,36 @@ int IPrepare() {
 			}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 		
 
-			if (ShowBits::checkLevel(ShowBits::levelNormal)) {
-
+			//if (ShowBits::checkLevel(ShowBits::levelNormal)) {
+/*
 				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"");{
 
-					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Zewnêtrzny adres IP");
+//					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Zewnêtrzny adres IP");
 
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT | ACTSC_INLINE,"", CFG::publicAddress);
 					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Nie musisz wype³niaæ tego pola! Program posiada obs³ugê STUN i w wiêkszoœci przypadków rozpozna ten adres samodzielnie.", 0, 0, -2);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
+*/
+				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"Ustawienia sieci");{
 
-				UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUP,"Numery portów");{
-
-					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"UDP");
+					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"Porty: UDP");
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_INLINE|ACTSC_NEEDRESTART, AP_TIP "Komunikacja z serwerem odbywa siê przez UDP.\n\nDomyœlnie - 5060", Actio::CFG::udpPort, 50);
 
 					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"TCP");
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_INLINE|ACTSC_NEEDRESTART, AP_TIP "Je¿eli komunikacja poprzez UDP nie jest mo¿liwa - u¿ywany jest protokó³ TCP.\n\nDomyœlnie - 5060", Actio::CFG::tcpPort, 50);
 
 					UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT|ACTSC_INLINE,"RTP");
-					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_NEEDRESTART, AP_TIP "G³os przesy³any jest przy pomocy protoko³u RTP.\nKa¿da rozmowa umieszczana jest na osobnych dwóch kana³ach. Wolnych musi byæ wiêc conajmniej kilkanaœcie portów wzwy¿.\n\nDomyœlnie - 9000", Actio::CFG::rtpPort, 50);
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INT|ACTSC_NEEDRESTART | ACTSC_INLINE, AP_TIP "G³os przesy³any jest przy pomocy protoko³u RTP.\nKa¿da rozmowa umieszczana jest na osobnych dwóch kana³ach. Wolnych musi byæ wiêc conajmniej kilkanaœcie portów wzwy¿.\n\nDomyœlnie - 9000", Actio::CFG::rtpPort, 50);
+
+					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Actio dzia³a na protokole SIP. Domyœlnie protokó³ ten wykorzystuje porty UDP 5060 i 9000-9010, oraz TCP 5060. Je¿eli posiadasz firewall, musisz odblokowaæ te porty do komunikacji obustronnej, lub (najlepiej) zezwoliæ aplikacji Konnekt na pe³n¹ komunikacjê z sieci¹.", 0, 0, -2);
+
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK|ACTSC_NEEDRESTART, "U¿yj technologii STUN do ominiêcia NAT" AP_TIP "Us³uga STUN umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).", Actio::CFG::useSTUN);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
-			}
+			//}
 
-		}
+		//}
 
 
 	}
@@ -433,6 +446,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 			Actio::disconnect();
 			return 0;
 		case ACT::moreOptions:
+			ACTIONONLY(anBase);
 			ICMessage(IMI_CONFIG, Actio::ACT::configMoreGroup);
 			return 0;
 		case ACT::statusOnline:
@@ -459,6 +473,10 @@ ActionProc(sUIActionNotify_base * anBase) {
 					if (indb)
 						UIActionSetText(anBase->act, calling ? "Zobacz po³¹czenie" : "Zadzwoñ");
 				} else if (anBase->code == ACTN_DEFAULT) {
+					static bool smsAvailable = IMessage(IM_PLUG_NET, NET_SMS) != NET_NONE;
+					if (smsAvailable && GETINT(CFG::smsDefaultAction) && GETCNTI(anBase->act.cnt, CNT_NET) == NET_NONE) {
+						return false;
+					}
 					return (indb && (calling || net==NET_NONE || net==Actio::net));
 				} else if (anBase->code == ACTN_ACTION) {
 					if (calling) {
@@ -541,6 +559,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 		case Actio::ACT::linkCreateAccount:
 			ACTIONONLY(anBase);
 			ShellExecute(0, "open", Actio::urlCreateAccount, 0, 0, SW_SHOW);
+			//Actio::createAccount();
 			return 0;
 		case Actio::ACT::linkLostPassword:
 			ACTIONONLY(anBase);
@@ -581,6 +600,8 @@ int __stdcall IMessageProc(sIMessage_base * msgBase) {
 	case IM_PLUG_INIT:       Plug_Init(msg->p1,msg->p2);return Init();
 	case IM_PLUG_DEINIT:     Plug_Deinit(msg->p1,msg->p2);return DeInit();
 	case IM_PLUG_DONTFREELIBRARY: return 1;
+    case IM_PLUG_PRIORITY:   return PLUGP_LOW;
+
 
 	case IM_SETCOLS:		 return ISetCols();
 
@@ -602,6 +623,16 @@ int __stdcall IMessageProc(sIMessage_base * msgBase) {
 		return account && account->isConnected() ? ST_ONLINE : ST_OFFLINE;
 	case IM_GET_STATUSINFO:
 		return (int)"";
+
+	case IM_CHANGESTATUS:
+		if (msg->p1 != ST_OFFLINE) {
+			if (account && account->isConfigured()) {
+				Actio::connect(true);
+			}
+		} else {
+			Actio::disconnect();
+		}
+		return 0;
 
 	case IM_CNT_CHANGED: case IM_CNT_ADD:
 		numbersMap.updateContact(msg->p1);
