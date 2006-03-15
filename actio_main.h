@@ -4,6 +4,8 @@
 
 #include "KAccount.h"
 
+#include <Stamina/Version.h>
+
 namespace Actio {
 	extern Tables::oTable dtIncoming;
 	extern Tables::oTable dtOutgoing;
@@ -58,6 +60,8 @@ namespace Actio {
 	void newCall();
 	void calibrateSound();
 
-	void createAccount();
+	void createAccount(HWND parent);
+
+	void updateVersion(Stamina::Version old);
 
 };

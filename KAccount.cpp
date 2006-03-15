@@ -28,7 +28,7 @@ namespace Stamina { namespace PhonoLogic {
 
 
 	KAccount::KAccount() {
-		this->logFile = Stamina::expandEnvironmentStrings("%KonnektLog%\\actio.log");
+		this->logFile = Stamina::expandEnvironmentStrings("%KonnektLog%\\actio.log").c_str();
 		this->_threadRunner->setRunner(konnektBeginThread);
 		//sipxConfigSetBeginThread(konnektBeginThread);
 
@@ -66,7 +66,7 @@ namespace Stamina { namespace PhonoLogic {
 			url += "@" + serverHost;
 			account->setSipUrl(url  /* Ctrl->DTgetStr(DTCFG, 0, "Actio/sipUrl")*/);
 			account->setSipUser(GETSTR(CFG::userName));
-			account->setSipPassMD5(GETSTR(CFG::userPassMD5));
+			account->setSipPass(GETSTR(CFG::userPass));
 			Account::publicAddress = GETSTR(CFG::publicAddress);
 			if (this->_mainThread.isCurrent()) {
 				IMDEBUG(DBG_FUNC, "connect(url=%s, user=%s, pub=%s)",url.c_str() , GETSTR(CFG::userName), GETSTR(CFG::publicAddress));
@@ -163,15 +163,15 @@ namespace Stamina { namespace PhonoLogic {
 		if (account && account->windowExists() && account->getWindow()->isActive())
 			return;
 
-		UI::CFG::enMsgPopup popup = (UI::CFG::enMsgPopup) GETINT(Actio::CFG::callPopup);
+		Konnekt::UI::CFG::enMsgPopup popup = (Konnekt::UI::CFG::enMsgPopup) GETINT(Actio::CFG::callPopup);
 		if (popup == -1) {
-			popup = (UI::CFG::enMsgPopup) GETINT(CFG_UIMSGPOPUP);
+			popup = (Konnekt::UI::CFG::enMsgPopup) GETINT(CFG_UIMSGPOPUP);
 		}
-		if (popup == UI::CFG::mpFocused) {
+		if (popup == Konnekt::UI::CFG::mpFocused) {
 			account->getWindow()->show(true, true);
-		} else if (popup == UI::CFG::mpBackground) {
+		} else if (popup == Konnekt::UI::CFG::mpBackground) {
 			account->getWindow()->show(false, true);
-		} else if (popup == UI::CFG::mpMinimized) {
+		} else if (popup == Konnekt::UI::CFG::mpMinimized) {
 			account->getWindow()->show(false, false);
 		}
 
@@ -291,7 +291,7 @@ namespace Stamina { namespace PhonoLogic {
 
 		if (file.compare(0, 4, "test") == 0) {
 			if (file == "testSpeaker") {
-				return Stamina::expandEnvironmentStrings("%KonnektData%\\Actio\\test.wav");
+				return Stamina::expandEnvironmentStrings("%KonnektData%\\Actio\\test.wav").c_str();
 			} else if (file == "testRinger") {
 				const char* path = SAFECHAR(kSound::GetSoundFile(Ctrl, "phoneAlert", 0));
 				return *path ? path : "sounds\\phonealert.wav";
@@ -304,7 +304,7 @@ namespace Stamina { namespace PhonoLogic {
 				} else if (file == "failed") {
 					return ksound ? SAFECHAR(kSound::GetSoundFile(Ctrl, "phoneFailed")) : "sounds\\phonefailed.wav";
 				} else {
-					return Stamina::expandEnvironmentStrings("%KonnektData%\\Actio\\" + file + ".wav");
+					return Stamina::expandEnvironmentStrings("%KonnektData%\\Actio\\" + file + ".wav").c_str();
 				}
 			}
 		}

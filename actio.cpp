@@ -69,8 +69,8 @@ Tables::oTable createArchiveTable(const CStdString& name) {
 int ISetCols() {
 	using namespace Tables;
 	SetColumn(tableConfig, Actio::CFG::userName, ctypeString | cflagXor, "", "Actio/userName");
-	SetColumn(tableConfig, Actio::CFG::userPass, ctypeString | cflagDontSave | cflagSecret | cflagXor, "", "Actio/userPass");
-	SetColumn(tableConfig, Actio::CFG::userPassMD5, ctypeString | cflagSecret | cflagXor, "", "Actio/userPassMD5");
+	SetColumn(tableConfig, Actio::CFG::userPass, ctypeString | cflagSecret | cflagXor, "", "Actio/userPass");
+	//SetColumn(tableConfig, Actio::CFG::userPassMD5, ctypeString | cflagSecret | cflagXor, "", "Actio/userPassMD5");
 	SetColumn(tableConfig, colByName, ctypeString | cflagXor, "", "Actio/sipUrl");
 	SetColumn(tableConfig, Actio::CFG::publicAddress, ctypeString | cflagXor, "", "Actio/publicAddress");
 	SetColumn(tableConfig, Actio::CFG::enableAtStartup, ctypeInt, 1, "Actio/enableAtStartup");
@@ -132,7 +132,7 @@ int ISetCols() {
 
 int IPrepare() {
 
-	if (GETINT(CFG::enableAtStartup) && *GETSTR(CFG::userName) && *GETSTR(CFG::userPassMD5)) {
+	if (GETINT(CFG::enableAtStartup) && *GETSTR(CFG::userName) && *GETSTR(CFG::userPass)) {
 		ICMessage(IMC_SETCONNECT, 1);
 	}
 
@@ -225,7 +225,7 @@ int IPrepare() {
 			UIActionCfgAdd(ACT::configGroup , 0 ,ACTT_COMMENT | ACTSC_INLINE,"Numer miejski", 0, 0, 5);
 			UIActionAdd(ACT::configGroup , IMIB_CFG ,ACTT_EDIT | ACTSC_INLINE | ACTR_CONVERT | ACTSC_INT ,"" AP_TIP "Login jest jednoczeœnie Twoim numerem miejskim. Wpisz go razem z '48' na pocz¹tku.\r\nnp.: 48221234567",CFG::userName,80);
 			UIActionAdd(ACT::configGroup , 0 ,ACTT_COMMENT | ACTSC_INLINE ,"Has³o");
-			UIActionAdd(ACT::configGroup , IMIB_CFG ,ACTT_PASSWORD | ACTSC_INLINE | ACTR_CONVERT,"" AP_TIP "Liczba gwiazdek nie okreœla liczby liter które zawiera has³o!",CFG::userPass,80);
+			UIActionAdd(ACT::configGroup , IMIB_CFG ,ACTT_PASSWORD | ACTSC_INLINE | ACTR_CONVERT,"" ,CFG::userPass,80);
 
 			txt = SetActParam("Przypomnienie has³a", AP_ICO, Stamina::inttostr(ICON_REMINDPASSWORD));
 			UIActionAdd(ACT::configGroup , ACT::linkLostPassword ,ACTT_LINK,txt);
@@ -356,53 +356,11 @@ int ActionCfgProc(sUIActionNotify_base * anBase) {
 			}
 			break;
 		case Actio::CFG::userPass: 
-			if (anBase->code == ACTN_GET) {
+			if (anBase->code == ACTN_SET) {
 				sUIActionNotify_buff* anb = (sUIActionNotify_buff*)(anBase);
-				if (*GETSTR(CFG::userPassMD5) == 0) {
-					strncpy(anb->buff, "", anb->buffSize);
-				} else {
-					strncpy(anb->buff, "öööööö", anb->buffSize);
-				}
-			} else if (anBase->code == ACTN_SET) {
-				sUIActionNotify_buff* anb = (sUIActionNotify_buff*)(anBase);
-				bool passChanged = (strcmp(anb->buff, "öööööö"));
-				if (*GETSTR(Actio::CFG::userName)==0 || *anb->buff == 0) {
-					account->setSipPassMD5("");
-					SETSTR(CFG::userPassMD5, "");
-					IMDEBUG(DBG_FUNC, "Password reset");
-				} else if ( passChanged || nameChanged ) {
-					/*char sipUrl [250];
-					UIActionCfgGetValue(sUIAction(anBase->act.parent, IMIB_CFG | Ctrl->DTgetNameID(DTCFG, "Actio/sipUrl")), sipUrl, 250);*/
-					CStdString url = GETSTR(Actio::CFG::userName);
-					if (url.length() > 2 && url.substr(0, 2) != "48") {
-						url = "48" + url;
-					}
-					url += "@" + Actio::serverHost;
-					account->setSipUrl(url);
-					account->setSipUser(GETSTR(Actio::CFG::userName));// mo¿na bezpiecznie, pole "Login" by³a przerobione przed sekund¹...
-
+				bool passChanged = (strcmp(anb->buff, GETSTR(CFG::userPass)));
+				if ( passChanged || nameChanged ) {
 					account->setSetting(settingWasAuthorized, 0);
-					//account->setSetting(settingWasQOS, 0);
-
-					CStdString newPass;
-					if (passChanged) {
-						newPass = anb->buff;
-					} else if (account->getPhoneUrl().getUser().empty()) {
-						newPass = "";
-					} else {
-						sDIALOG_access dla;
-						dla.flag = 0;
-						dla.handle = UIGroupHandle(sUIAction(0, IMIG_CFGWND));
-						CStdString title = "Has³o do konta Actio - ";
-						title += GETSTR(Actio::CFG::userName);
-						dla.title = title.c_str();
-						dla.info = "Zmieni³eœ identyfikator konta nie podaj¹c do niego has³a. Proszê wpisz je teraz poni¿ej.";
-						Ctrl->ICMessage(IMI_DLGPASS, (int)&dla);
-						newPass = SAFECHAR(dla.pass);
-					}
-					account->setSipPass(newPass);
-					SETSTR(CFG::userPassMD5, account->getSipPassMD5());
-					IMDEBUG(DBG_FUNC, "New password digest stored for %s", url.c_str());
 				}
 
 			}
@@ -425,7 +383,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 					size = img->getSize();
 				}
 
-				Stamina::ButtonX* b = new Stamina::ButtonX("", BS_OWNERDRAW | WS_VISIBLE | WS_TABSTOP | WS_CHILD, cw->x, cw->y, size.w, size.h, cw->hwndParent, 0, 0);
+				Stamina::UI::ButtonX* b = new Stamina::UI::ButtonX("", BS_OWNERDRAW | WS_VISIBLE | WS_TABSTOP | WS_CHILD, cw->x, cw->y, size.w, size.h, cw->hwndParent, 0, 0);
 				if (img) {
 					b->setImage(img);
 				} else {
@@ -558,8 +516,8 @@ ActionProc(sUIActionNotify_base * anBase) {
 
 		case Actio::ACT::linkCreateAccount:
 			ACTIONONLY(anBase);
-			ShellExecute(0, "open", Actio::urlCreateAccount, 0, 0, SW_SHOW);
-			//Actio::createAccount();
+			//ShellExecute(0, "open", Actio::urlCreateAccount, 0, 0, SW_SHOW);
+			Actio::createAccount( (HWND)UIActionHandle(sUIAction(0, IMIG_CFGWND)) );
 			return 0;
 		case Actio::ACT::linkLostPassword:
 			ACTIONONLY(anBase);
@@ -610,6 +568,9 @@ int __stdcall IMessageProc(sIMessage_base * msgBase) {
 	case IM_END:             return IEnd();
 
 	case IM_UIACTION:        return ActionProc((sUIActionNotify_base*)msg->p1);
+
+	case IM_PLUG_UPDATE:	 Actio::updateVersion(Version(msg->p1));
+		return 0;
 
 	case IM_CONNECT:
 		if (account && account->isConfigured())

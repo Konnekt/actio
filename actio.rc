@@ -27,7 +27,7 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,7,2,0
+ FILEVERSION 0,7,4,0
  PRODUCTVERSION 0,6,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -45,7 +45,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Stamina"
             VALUE "FileDescription", "Konnekt - Actio"
-            VALUE "FileVersion", "0.7.2"
+            VALUE "FileVersion", "0.7.4"
             VALUE "InternalName", "actio"
             VALUE "LegalCopyright", "Copyright (C) 2005,2006 Stamina"
             VALUE "OriginalFilename", "actio.dll"
@@ -72,6 +72,82 @@ ONLINE                  ICON                    "res\\online.ico"
 OFFLINE                 ICON                    "res\\offline.ico"
 WINDOW                  ICON                    "res\\window.ico"
 MAKECALL                ICON                    "res\\makecall.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BROWSER DIALOGEX 0, 0, 416, 277
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT | WS_EX_APPWINDOW
+CAPTION "Dialog"
+MENU IDR_MENU1
+FONT 8, "Tahoma", 700, 0, 0xEE
+BEGIN
+    CONTROL         "",IDC_PROGRESS1,"msctls_progress32",NOT WS_VISIBLE | 
+                    WS_BORDER,327,255,79,10
+    LTEXT           "Static",IDC_BROWSER,0,0,416,245,WS_BORDER
+    GROUPBOX        "",IDC_STATIC,2,246,411,29
+    RTEXT           "",IDC_INFO,327,265,79,8
+    CONTROL         "Uruchom tê stronê w domyœlnej przegl¹darce",IDC_REOPEN,
+                    "Button",BS_OWNERDRAW | BS_LEFT | BS_FLAT,6,256,187,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_BROWSER, DIALOG
+    BEGIN
+        RIGHTMARGIN, 357
+        VERTGUIDE, 2
+        VERTGUIDE, 327
+        VERTGUIDE, 406
+        VERTGUIDE, 413
+        BOTTOMMARGIN, 229
+        HORZGUIDE, 275
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "Opcje"
+    BEGIN
+        MENUITEM "Kopiuj",                      ID_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "Odœwie¿",                     ID_REFRESH
+        MENUITEM "Cofnij",                      ID_GOBACK
+        MENUITEM SEPARATOR
+        MENUITEM "Otwórz w domyœlnej",          IDC_REOPEN
+        MENUITEM "Anuluj",                      ID_STRONA_ANULUJ
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    ID_STRONA_ANULUJ        "IDCANCEL"
+END
+
 #endif    // Polish resources
 /////////////////////////////////////////////////////////////////////////////
 
