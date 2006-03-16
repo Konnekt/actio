@@ -85,6 +85,7 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::tcpPort, ctypeInt, 5060, prefix + settingTcpPort);
 	SetColumn(tableConfig, CFG::udpPort, ctypeInt, 5060, prefix + settingUdpPort);
 	SetColumn(tableConfig, CFG::rtpPort, ctypeInt, 9000, prefix + settingRtpPort);
+	SetColumn(tableConfig, CFG::bindIP, ctypeString, "", prefix + settingBindIP);
 
 	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, "Actio/useSTUN");
 
@@ -331,7 +332,14 @@ int IPrepare() {
 
 					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Actio dzia³a na protokole SIP. Domyœlnie protokó³ ten wykorzystuje porty UDP 5060 i 9000-9010, oraz TCP 5060. Je¿eli posiadasz firewall, musisz odblokowaæ te porty do komunikacji obustronnej, lub (najlepiej) zezwoliæ aplikacji Konnekt na pe³n¹ komunikacjê z sieci¹.", 0, 0, -2);
 
+					if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
+						UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INLINE, AP_TIP "Je¿eli masz kilka ró¿nych IP, mo¿esz podaæ to, z którego wtyczka ma korzystaæ. W przeciwnym wypadku nic nie wpisuj - wtyczka wybierze pierwsze IP z listy.", Actio::CFG::bindIP, 70);
+						UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT, "IP interfejsu sieciowego");
+					}
+
 					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK|ACTSC_NEEDRESTART, "U¿yj technologii STUN do ominiêcia NAT" AP_TIP "Us³uga STUN umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).", Actio::CFG::useSTUN);
+
+
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 			//}

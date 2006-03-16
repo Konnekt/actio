@@ -97,7 +97,6 @@ namespace Actio {
 		}
 		ActioBrowser* ab = new ActioBrowser();
 		ab->setUrl("http://www.konnekt.info/actio/zaloz_konto?byKonnekt", "");
-		ab->setUrl("http://test.konnekt.info/test.php", "");
 		ab->setOriginalUrl("http://www.konnekt.info/actio/zaloz_konto");
 		ab->run(false, 0, "Zak³adanie konta");
 	}

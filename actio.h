@@ -60,6 +60,8 @@ namespace Actio {
 
 		const unsigned int useSTUN = baseId + 20;
 
+		const unsigned int bindIP = baseId + 21;
+
 	};
 	namespace CNT {
 		const unsigned int phoneUrl = baseId + 0;
