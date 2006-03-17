@@ -24,6 +24,32 @@ namespace Actio {
 //	const CStdString serverHost =  "fwd.pulver.com";
 	const CStdString stunHost =  "stun.fwdnet.net";
 
+	void initPSTNPatterns() {
+		PhoneUrl::patternPSTNSIP.reset(new Stamina::RegEx::Compiled (
+			"/^00("
+			"9266|9201|9261|9208|9366|9393|9211|9478|9220|9211|9777|9747|9471|9353|9258|9027"
+			")/"
+			));
+		PhoneUrl::patternPSTNSIPNetwork.reset(new Stamina::RegEx::Compiled (
+			"/^0("
+			"123833|1239400|1239401|1239402|1239403|1239404|"
+            "134932|146922|1771742|1771743|1771744|185422|"
+			"2221322|2221323|2221324|2221325|2221326|223821|224861|"
+			"243624|2438710|2438711|2438712|296430|"
+			"327444|3275034|3275035|3275036|3275037|"
+			"3348610|3348611|3348612|3439050|3439051|3439052|"
+            "4131036|4131037|4131038|422784|4229935|4229936|4229937|"
+			"447392|4838076|5255289|5255300|5255301|5255302|544449|"
+			"556202|564772|5874142|5874143|5874144|5874145|5874146|587420|"
+            "616489|625794|632194|673499|684146|717199|746612|756115|767445|"
+			"775441|7754506|7754507|8146363|8146364|8146365|814705|"
+			"845384|858743|896748|8967950|8967951|8967952|"
+			"918828|9188665|9188666|9188667|9188668|9188669|947172|"
+            "957829"
+			")/"
+			));
+	}
+
 	void init() {
 
 // to powinno byæ zrobione inaczej!
@@ -32,6 +58,7 @@ namespace Actio {
 
 		Stamina::setInstance(Ctrl->hDll());
 		PhonoLogic::Window::imgPath = expandEnvironmentStrings("%KonnektData%\\actio\\").c_str();
+		initPSTNPatterns();
 	}
 	void start() {
 		IMessage(&sIMessage_StatusChange(IMC_STATUSCHANGE , 0 , ST_OFFLINE , 0));

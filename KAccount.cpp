@@ -27,6 +27,7 @@ namespace Stamina { namespace PhonoLogic {
 	}
 
 
+
 	KAccount::KAccount() {
 		this->logFile = Stamina::expandEnvironmentStrings("%KonnektLog%\\actio.log").c_str();
 		this->_threadRunner->setRunner(konnektBeginThread);
@@ -495,7 +496,7 @@ namespace Stamina { namespace PhonoLogic {
 			ua = "Konnekt-Actio " + ua;
 			Stamina::oInternet internet = new Stamina::Internet((HINTERNET) ICMessage(IMC_HINTERNET_OPEN, (int)ua.c_str()));
 			CStdString url;
-			url.Format("%sversion=%x&user=%s&digest=%s", accountServer, ICMessage(IMC_PLUG_VERSION, Ctrl->ID()), urlEncode(this->_sipUser).c_str(), MD5Hex( "account" + this->_sipPassMD5 ).c_str() );
+			url.Format("%sversion=%x&user=%s&digest=%s", accountServer, ICMessage(IMC_PLUG_VERSION, Ctrl->ID()), urlEncode(this->_sipUser).c_str(), MD5Hex( "account" + this->_sipPass ).c_str() );
 
 			Stamina::oRequest request = new Stamina::Request(new Stamina::Connection(internet, url), url, Stamina::Request::typeGet, 0, 0, 0, INTERNET_FLAG_RELOAD);
 			request->sendThrowable();

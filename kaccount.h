@@ -15,7 +15,6 @@ namespace Stamina {namespace PhonoLogic {
 		KAccount();
 		~KAccount();
 
-
 		std::string getUserAgent();
 
 		void connect(bool byUser);
