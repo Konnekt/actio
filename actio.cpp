@@ -87,8 +87,9 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::rtpPort, ctypeInt, 9000, prefix + settingRtpPort);
 	SetColumn(tableConfig, CFG::bindIP, ctypeString, "", prefix + settingBindIP);
 
-	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, "Actio/useSTUN");
-
+	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, prefix + settingUseSTUN);
+	SetColumn(tableConfig, CFG::useICE, ctypeInt, 0, prefix + settingUseICE);
+	SetColumn(tableConfig, CFG::useTCP, ctypeInt, 0, prefix + settingUseTCP);
 
 	SetColumn(tableConfig, CFG::smsDefaultAction, ctypeInt, 1, prefix + "ui/smsdefault");
 
@@ -333,13 +334,16 @@ int IPrepare() {
 					UIActionCfgAdd(ACT::configMoreGroup, 0, ACTT_TIPBUTTON, AP_TIP "Actio dzia³a na protokole SIP. Domyœlnie protokó³ ten wykorzystuje porty UDP 5060 i 9000-9010, oraz TCP 5060. Je¿eli posiadasz firewall, musisz odblokowaæ te porty do komunikacji obustronnej, lub (najlepiej) zezwoliæ aplikacji Konnekt na pe³n¹ komunikacjê z sieci¹.", 0, 0, -2);
 
 					if (ShowBits::checkLevel(ShowBits::levelIntermediate)) {
-						UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_INLINE, AP_TIP "Je¿eli masz kilka ró¿nych IP, mo¿esz podaæ to, z którego wtyczka ma korzystaæ. W przeciwnym wypadku nic nie wpisuj - wtyczka wybierze pierwsze IP z listy.", Actio::CFG::bindIP, 70);
-						UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT, "IP interfejsu sieciowego");
+						UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_EDIT|ACTSC_NEEDRESTART|ACTSC_INLINE, "", Actio::CFG::bindIP, 90);
+						UIActionCfgAdd(ACT::configMoreGroup, ACT::configBindTip, ACTT_TIPBUTTON|ACTSC_INLINE,  "", 0, 0, -2);
+						UIActionAdd(ACT::configMoreGroup, 0, ACTT_COMMENT, "Interfejs sieciowy");
 					}
 
-					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK|ACTSC_NEEDRESTART, "U¿yj technologii STUN do ominiêcia NAT" AP_TIP "Us³uga STUN umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).", Actio::CFG::useSTUN);
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "U¿yj technologii STUN do ominiêcia NAT" AP_TIP "Us³uga STUN umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).\nZmiana zostanie uwzglêdniona przy nastêpnym ³¹czeniu.", Actio::CFG::useSTUN);
 
+					UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "U¿yj technologii ICE do ominiêcia NAT" AP_TIP "Us³uga ICE umo¿liwia dzia³anie w nietypowych konfiguracjach sieciowych (np. ³¹czenie zza NAT - tzw. IP Prywatne).\nZmiana zostanie uwzglêdniona przy nastêpnym ³¹czeniu.", Actio::CFG::useICE);
 
+					//UIActionAdd(ACT::configMoreGroup, IMIB_CFG, ACTT_CHECK, "Preferuj po³¹czenia TCP nad UDP" AP_TIP "W niektórych rzadkich przypadkach ³¹czenie przy pomocy protoko³u TCP mo¿e rozwi¹zaæ problemy z po³¹czeniem.", Actio::CFG::useTCP);
 
 				}UIActionAdd(ACT::configMoreGroup, 0, ACTT_GROUPEND,"");
 			//}
@@ -544,6 +548,23 @@ ActionProc(sUIActionNotify_base * anBase) {
 			account->onButtonPressed(buttonAccount);
 			return 0;
 
+		case Actio::ACT::configBindTip:
+			{
+				ACTIONONLY(anBase);
+				CStdString info = AP_TIPTITLE "Ustawianie lokalnego interfejsu" AP_TIPRICH_WIDTH "250" AP_TIPRICH "Je¿eli masz kilka ró¿nych lokalnych IP, mo¿esz podaæ to, z którego wtyczka ma korzystaæ.<br/><br/>Je¿eli u¿ywasz kilka kart sieciowych, mo¿esz wpisaæ identyfikator interfejsu (zostanie u¿yte jego pierwsze IP).<br/><br/>W przeciwnym wypadku nic nie wpisuj - wtyczka wybierze IP automatycznie.<br/><br/>Twoje interfejsy sieciowe:<br/><b>ID karty\tIP</b><br/>";
+
+				std::vector<Account::InterfaceInfo> ips = account->getLocalInterfaces();
+				for (int i = 0; i < ips.size(); ++i) {
+					info += ips[i].iface;
+					info += "\t";
+					info += ips[i].ip;
+					info += "<br/>";
+				}
+
+				UIActionSetText(anBase->act, info);
+
+			}
+			return 0;
 
 	}
 	return 0;

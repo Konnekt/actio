@@ -39,6 +39,8 @@ namespace Actio {
 		const unsigned int makeCallHome = makeCallGroup + 3;
 		const unsigned int makeCallWork = makeCallGroup + 4;
 
+		const unsigned int configBindTip = baseId + 50;
+
 	};
 	namespace CFG {
 		const unsigned int userName = baseId + 0;
@@ -62,6 +64,9 @@ namespace Actio {
 
 		const unsigned int bindIP = baseId + 21;
 
+		const unsigned int useICE = baseId + 22;
+
+		const unsigned int useTCP = baseId + 23;
 	};
 	namespace CNT {
 		const unsigned int phoneUrl = baseId + 0;

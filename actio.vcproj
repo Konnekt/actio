@@ -179,10 +179,10 @@
 				RelativePath=".\klogger.h">
 			</File>
 			<File
-				RelativePath=".\resource.h">
+				RelativePath="..\..\..\stamina\Stamina\PhonoLogic\resource.h">
 			</File>
 			<File
-				RelativePath="..\..\..\stamina\Stamina\PhonoLogic\resource.h">
+				RelativePath=".\resource.h">
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
