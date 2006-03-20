@@ -88,7 +88,7 @@ int ISetCols() {
 	SetColumn(tableConfig, CFG::bindIP, ctypeString, "", prefix + settingBindIP);
 
 	SetColumn(tableConfig, CFG::useSTUN, ctypeInt, 1, prefix + settingUseSTUN);
-	SetColumn(tableConfig, CFG::useICE, ctypeInt, 0, prefix + settingUseICE);
+	SetColumn(tableConfig, CFG::useICE, ctypeInt, 1, prefix + settingUseICE);
 	SetColumn(tableConfig, CFG::useTCP, ctypeInt, 0, prefix + settingUseTCP);
 
 	SetColumn(tableConfig, CFG::smsDefaultAction, ctypeInt, 1, prefix + "ui/smsdefault");
