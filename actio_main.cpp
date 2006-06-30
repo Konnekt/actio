@@ -3,6 +3,7 @@
 #include "actio.h"
 #include "actio_main.h"
 #include <Stamina\PhonoLogic\CalibrationWnd.h>
+#include <Stamina\Debug.h>
 #include <include/dlghtml.h>
 #include "ActioBrowser.h"
 // to powinno byæ zrobione inaczej!
@@ -70,6 +71,8 @@ namespace Actio {
 		if (!account) return;
 		delete account;
         account = 0;
+
+//		Stamina::debugDumpObjects(Stamina::mainLogger, logDebug);
 	}
 
 

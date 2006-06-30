@@ -33,7 +33,7 @@ namespace Stamina { namespace PhonoLogic {
 		this->_threadRunner->setRunner(konnektBeginThread);
 		//sipxConfigSetBeginThread(konnektBeginThread);
 
-		this->stunHost = "stun.actio.pl";
+		this->stunHost = "stun.fwdnet.net"; //"stun.actio.pl";
 		PhoneUrl::defaultHost = serverHost;
 		keepOneSession = true;
 		_balance = 0;

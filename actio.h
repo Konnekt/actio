@@ -67,6 +67,8 @@ namespace Actio {
 		const unsigned int useICE = baseId + 22;
 
 		const unsigned int useTCP = baseId + 23;
+		const unsigned int portsAuto = baseId + 24;
+		
 	};
 	namespace CNT {
 		const unsigned int phoneUrl = baseId + 0;

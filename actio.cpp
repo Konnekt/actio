@@ -551,7 +551,7 @@ ActionProc(sUIActionNotify_base * anBase) {
 		case Actio::ACT::configBindTip:
 			{
 				ACTIONONLY(anBase);
-				CStdString info = AP_TIPTITLE "Ustawianie lokalnego interfejsu" AP_TIPRICH_WIDTH "250" AP_TIPRICH "Je¿eli masz kilka ró¿nych lokalnych IP, mo¿esz podaæ to, z którego wtyczka ma korzystaæ.<br/><br/>Je¿eli u¿ywasz kilka kart sieciowych, mo¿esz wpisaæ identyfikator interfejsu (zostanie u¿yte jego pierwsze IP).<br/><br/>W przeciwnym wypadku nic nie wpisuj - wtyczka wybierze IP automatycznie.<br/><br/>Twoje interfejsy sieciowe:<br/><b>ID karty\tIP</b><br/>";
+				CStdString info = AP_TIPTITLE "Ustawianie lokalnego interfejsu" AP_TIPRICH_WIDTH "250" AP_TIPRICH "Je¿eli masz kilka ró¿nych lokalnych IP, mo¿esz podaæ to, z którego wtyczka ma korzystaæ.<br/><br/>Je¿eli u¿ywasz kilku kart sieciowych, mo¿esz wpisaæ identyfikator interfejsu (zostanie u¿yte jego pierwsze IP).<br/><br/>W przeciwnym wypadku nic nie wpisuj - wtyczka wybierze IP automatycznie.<br/><br/>Twoje interfejsy sieciowe:<br/><b>ID karty\tIP</b><br/>";
 
 				std::vector<Account::InterfaceInfo> ips = account->getLocalInterfaces();
 				for (int i = 0; i < ips.size(); ++i) {
