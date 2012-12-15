@@ -20,8 +20,8 @@ namespace Actio {
 	int mtypePhoneCall = 0;
 	NumbersMap numbersMap;
 
-//	const CStdString serverHost =  "sip.actio.pl";
-	const CStdString serverHost =  "81.15.209.199";
+	const CStdString serverHost =  "sip.actio.pl";
+//	const CStdString serverHost =  "81.15.209.199";
 //	const CStdString serverHost =  "fwd.pulver.com";
 	const CStdString stunHost =  "stun.fwdnet.net";
 

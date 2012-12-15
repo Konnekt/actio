@@ -27,7 +27,7 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,7,8,0
+ FILEVERSION 0,7,10,0
  PRODUCTVERSION 0,6,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -45,7 +45,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Stamina"
             VALUE "FileDescription", "Konnekt - Actio"
-            VALUE "FileVersion", "0.7.8"
+            VALUE "FileVersion", "0.7.10"
             VALUE "InternalName", "actio"
             VALUE "LegalCopyright", "Copyright (C) 2005,2006 Stamina"
             VALUE "OriginalFilename", "actio.dll"
